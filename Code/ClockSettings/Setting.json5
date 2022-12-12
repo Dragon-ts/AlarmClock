@@ -1,0 +1,23 @@
+{
+  "windowBox": {    //窗口框设置
+    "title": "Clock v0.2.0 (DRAGON_TS未响应)",    //窗口框标题
+    "color": "#E1D4F9",    //窗口背景色
+    "width": 960,    //窗口宽度
+    "height": 540,    //窗口高度
+    "allowChangeSize": false    //是否允许改变大小
+  },
+  "window": {    //窗口内部设置
+    "title": {    //窗口标题设置
+      "text": "Clock v0.2.0",  //文字
+      "bg": "#E1D4F9",  //背景色
+      "fg": "#00ACC1",  //颜色
+      "fontSize": 30  //大小
+    },
+    "warn": {
+      "bg": "#E1D4F9",
+      "font": "方正喵呜简体",
+      "fontSize": 20,
+      "bold": true
+    }
+  }
+}
