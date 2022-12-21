@@ -1,9 +1,10 @@
 import tkinter as tk
 import tkinter.font as tf
 import threading
+import pyaudio
 
 from apscheduler.schedulers.blocking import BlockingScheduler
-from os import mkdir, path
+from os import mkdir, path, system
 from glob import glob
 from time import sleep, strftime, localtime, time
 from subprocess import run
@@ -16,6 +17,7 @@ from ctypes import pythonapi, c_long, py_object
 
 import mainWindow
 from line import AllLine
+import TimeOver
 
 #######MADEBYDRAGON_TS#######
 
@@ -148,33 +150,42 @@ class cmd():
         int(aaa.replace(':', '').replace("：", '').replace("\n", '').replace(" ", ''))
         musicl = musicAllList.get()
         musiclist = musicl.split('\n')
-        print(str(musiclist))
-
-        def job():
-            msg = '您设置的 '
-            nt = strftime('%H:%M', localtime(int(time())))
-            msg = f'{msg}{nt} 闹钟到啦'
-            print(msg)
-            if len(musiclist) == 1:
-                print(f'当前播放:{musiclist[0]}')
-                # playsound(f'ClockSettings/music/{musiclist[0]}')
-                music = AudioSegment.from_file(f'ClockSettings/music/{musiclist[0]}')
-                play(music)
-            else:
-                rdmMusic = randint(0, len(musiclist) - 1)
-                print(f'当前播放:{musiclist[rdmMusic]}')
-                music = AudioSegment.from_file(f'ClockSettings/music/{musiclist[rdmMusic]}')
-                play(music)
+        print(musiclist)
 
         sc = BlockingScheduler()
+
         global i
         while i != count:
             clhr = int(lines[i][:2])
             clmt = int(lines[i][3:])
-            sc.add_job(job, 'cron', hour=clhr, minute=clmt, id=f'{datetime.now()}', replace_existing=True)
+            sc.add_job(cmd.jobs.over, 'cron', hour=clhr, minute=clmt, id=f'{datetime.now()}', replace_existing=True)
             sleep(0.2)
             i += 1
         sc.start()
+    class jobs:
+        def job():
+            msg = '您设置的 '
+            nt = strftime('%H:%M', localtime(int(time())))
+            msg = f'{msg}{nt} 闹钟到啦'
+            musiclist = musicAllList.get().split('\n')
+            if len(musiclist) == 1:
+                print(f'当前播放:{musiclist[0]}')
+                # playsound(f'ClockSettings/music/{musiclist[0]}')
+                music = AudioSegment.from_file(fr'ClockSettings\music\{musiclist[0]}')
+                play(music)
+            else:
+                rdmMusic = randint(0, len(musiclist) - 1)
+                print(f'当前播放:{musiclist[rdmMusic]}')
+                music = AudioSegment.from_file(fr'ClockSettings\music\{musiclist[rdmMusic]}')
+                play(music)
+        def over():
+            newthread = threading.Thread(target=cmd.jobs.job)
+            newthread.start()
+            msg = '您设置的 '
+            nt = strftime('%H:%M', localtime(int(time())))
+            msg = f'{msg}{nt} 闹钟到啦'
+            TimeOver.over(msg)
+
 
     class myThread(threading.Thread):
         def __init__(self, func):
@@ -205,17 +216,17 @@ class cmd():
         def stop_thread(thread):
             cmd.stopThread._async_raise(thread.ident, SystemExit)
 
+
 # 指令设置
 
 # 指令执行
-
 
 
 # 指令执行
 
 # 小部件设置
 def settings():
-    if mainWindow.window.warn.bold == True:
+    if mainWindow.window.warn.bold:
         bd = tf.BOLD
     else:
         bd = tf.NORMAL
@@ -241,8 +252,8 @@ def settings():
     button3 = tk.Button(m, text='点击导入闹钟',  # 导入闹钟
                         command=cmd.Warnings,
                         width=10)
-    button4 = tk.Button(m, text='开启闹钟'    # 闹钟响铃主进程
-                        , command=lambda: cmd.myThread(cmd.alarms),
+    button4 = tk.Button(m, text='开启闹钟',  # 闹钟响铃主进程
+                        command=lambda: cmd.myThread(cmd.alarms),
                         width=5)
 
     text1.pack()
@@ -260,6 +271,6 @@ def settings():
 
 # 运行
 settings()
-#fir.quit()
+# fir.quit()
 cmd.checkmusic()
 m.mainloop()

@@ -1,11 +1,14 @@
 import json5
-import WriteJson as wj
-#MADEBYDRAGON_TS#
+import WriteJson as Wj
 
-readJson = wj.jsonMain()
+# MADE_BY_DRAGON_TS #
+
+readJson = Wj.jsonMain()
 js = json5.loads(readJson)
 
-
+class test:
+    def test():
+        return js['windowBox']['allowChangeSize']
 class box:
     global js
     title = js['windowBox']['title']
@@ -14,12 +17,14 @@ class box:
     resizable = js['windowBox']['allowChangeSize']
 
 
+
 class window:
     class title:
         text = js['window']['title']['text']
         bg = js['window']['title']['bg']
         fg = js['window']['title']['fg']
         size = js['window']['title']['fontSize']
+
     class warn:
         bg = js['window']['warn']['bg']
         font = js['window']['warn']['font']
