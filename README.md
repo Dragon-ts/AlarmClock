@@ -3,7 +3,7 @@ An alarm which made in Python
 
 ## v0.2.0及以前
 先进 *ClockSettings/music* 里放几首.mp3格式的音乐之后再运行程序  
-文件夹里原原有一个音乐，可以随意替换(●'◡'●)  
+文件夹里有一个默认音乐，可以随意替换(●'◡'●)  
 在 *ClockSettings/Font* 里有一些字体，安装后体验更佳  
 
 ## v0.2.1及以后
